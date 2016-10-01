@@ -67,10 +67,12 @@ Example output:
 Takes as input both a path to file listing chromosome/coordinate pairs and a path to GTF annotation file. Returns tab-separated list of chromosome. coordinate, and annotated gene name if found.
 
 Example command:
-- `./commands/get_annotations.py ./sample_files/annotate/coordinates_to_annotate.txt ./sample_files/gtf/hg19_annotations.gtf`
+- `./commands/get_annotations.py ./sample_files/annotate/coordinates_to_annotate.txt ./sample_files/gtf/hg19_annotations_shortened.gtf`
 - `./commands/get_annotations.py --help` for command line help text
 
 Example output:
+
+- Note: using the command above will not yield these results below, as `hg_annotations_shortened.gtf` has been significantly reduced from the original `hg_annotations.gtf` due to GitHub file size restrictions
 
 `chr12	20704380	PDE3A`
 
