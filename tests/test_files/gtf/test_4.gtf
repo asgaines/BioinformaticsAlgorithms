@@ -1,0 +1,4 @@
+chr3	refFlat	intron	134201774	134204162	.	-	.	gene_id "ANAPC13"; transcript_id "NM_001242374"; exon_number "1"; exon_id "NM_001242374.3"; gene_name "ANAPC13";	
+chr3	refFlat	exon	134201648	134201774	.	-	.	gene_id "ANAPC13"; transcript_id "NM_001242374"; exon_number "2"; exon_id "NM_001242374.2"; gene_name "ANAPC13";	
+chr3	refFlat	intron	134197558	134201648	.	-	.	gene_id "ANAPC13"; transcript_id "NM_001242374"; exon_number "2"; exon_id "NM_001242374.2"; gene_name "ANAPC13";
+chr3	refFlat	exon	134196546	134197558	.	-	.	gene_id "ANAPC13"; transcript_id "NM_001242374"; exon_number "3"; exon_id "NM_001242374.1"; gene_name "ANAPC13";	

@@ -1,0 +1,6 @@
+chr9	refFlat	exon	136333462	136333587	.	+	.	gene_id "CACFD1"; transcript_id "NM_001242370"; exon_number "4"; exon_id "NM_001242370.4"; gene_name "CACFD1";	
+chr9	refFlat	intron	136333587	136333685	.	+	.	gene_id "CACFD1"; transcript_id "NM_001242370"; exon_number "4"; exon_id "NM_001242370.5"; gene_name "CACFD1";	
+chr9	refFlat	exon	136333685	136335910	.	+	.	gene_id "CACFD1"; transcript_id "NM_001242370"; exon_number "5"; exon_id "NM_001242370.5"; gene_name "CACFD1";	
+chrX	refFlat	exon	51804923	51805135	.	-	.	gene_id "MAGED4B"; transcript_id "NM_001242362"; exon_number "14"; exon_id "NM_001242362.1"; gene_name "MAGED4B";	
+chrX	refFlat	intron	51805135	51805330	.	-	.	gene_id "MAGED4B"; transcript_id "NM_001242362"; exon_number "13"; exon_id "NM_001242362.2"; gene_name "MAGED4B";	
+chrX	refFlat	exon	51805330	51805761	.	-	.	gene_id "MAGED4B"; transcript_id "NM_001242362"; exon_number "13"; exon_id "NM_001242362.2"; gene_name "MAGED4B";	
