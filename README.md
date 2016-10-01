@@ -2,9 +2,9 @@
 
 Set of three commands, each with applications to DNA sequence analysis
 
-- FASTQ Percent Nucleotides Greater than Length
-- FASTA Top-Occurring Sequences
-- Annotate Gene Names
+- [FASTQ Percent Nucleotides Greater than Length](#fastq-percent-nucleotides-greater-than-length)
+- [FASTA Top-Occurring Sequences](#fasta-top-occurring-sequences)
+- [Annotate Gene Names](#annotate-gene-names)
 
 ## Installing
 
