@@ -95,3 +95,7 @@ Example output:
 `chr11	85195011	DLG2`
 
 `...`
+
+### Coding Time
+
+Completed in 11 hours between hours of Friday at 4:09pm and Saturday at 5:00pm
