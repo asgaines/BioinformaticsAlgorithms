@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+from structures.tree import GeneTree
 
 task = '''
 Annotate Gene Names.
@@ -65,24 +66,32 @@ def cache_chromosomes(filename):
                         chromosomes[chromosome][gene_name] = [gene_start_pos, gene_stop_pos]
                 else:
                     chromosomes[chromosome] = {gene_name: [gene_start_pos, gene_stop_pos]}
-        return chromosomes
+        # Convert genes into balanced binary tree
+        # Performed now, tree will be balanced; not
+        # guaranteed if genes loaded individually
+        return convert_binary_tree(chromosomes)
     except IOError:
         exit('Please provide a valid file')
 
+def convert_binary_tree(chromosomes):
+    '''
+    Takes chromosome hash table, converting list of genes into binary tree
+    '''
+    for chromosome in chromosomes.keys():
+        genes_sorted = sorted([[gene, chromosomes[chromosome][gene][0], chromosomes[chromosome][gene][1]] for gene in chromosomes[chromosome].keys()], key=lambda g: g[1])
+        chromosomes[chromosome] = GeneTree.init_from_sorted_genes(genes_sorted)
+    return chromosomes
+
 def find_overlap(chromosome, coordinate, chromosomes):
     '''
-    Takes chromosome|coordinate pair and searches for overlap
-    within the cached chromosome data
+    Takes chromosome|coordinate pair and returns gene name
+    if coordinate located in binary tree
     '''
 
     if chromosome in chromosomes.keys():
-        for gene_name in chromosomes[chromosome].keys():
-            # Access the start/stop sites
-            start_pos = chromosomes[chromosome][gene_name][0]
-            stop_pos = chromosomes[chromosome][gene_name][1]
-
-            if coordinate >= start_pos and coordinate <= stop_pos:
-                return gene_name
+        gene = chromosomes[chromosome].find(coordinate)
+        if gene:
+            return gene.get_name()
 
 def match_coords(coord_filename, chromosomes):
     '''
@@ -106,7 +115,7 @@ if __name__ == '__main__':
 
     # Create cache of chromosomes from annotation file
     chromosomes = cache_chromosomes(args.anno_file)
-
+    
     for result in match_coords(args.coord_file, chromosomes):
         print(result)
 
