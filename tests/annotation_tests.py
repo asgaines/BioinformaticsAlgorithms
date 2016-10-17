@@ -1,6 +1,7 @@
 import unittest
 
 from commands import get_annotations as annot
+from commands.structures.tree import GeneTree
 
 class TestGetAnnotations(unittest.TestCase):
     def setUp(self):
@@ -28,25 +29,30 @@ class TestGetAnnotations(unittest.TestCase):
         # Assert gene introns/exons are joined into a single
         # gene for improved performance
         # Single chromosome:
+        start, stop = 134196546, 134204162
         chromosomes = annot.cache_chromosomes(self.gtf_files[0])
-        start, stop = chromosomes.get('chr3').get('ANAPC13')
-        self.assertEqual(start, 134196546)
-        self.assertEqual(stop, 134204162)
+        gene = chromosomes.get('chr3').find((start + stop) / 2)
+        self.assertEqual(start, gene.get_start())
+        self.assertEqual(stop, gene.get_stop())
 
         # 2 chromosomes:
         chromosomes = annot.cache_chromosomes(self.gtf_files[1])
-        start, stop = chromosomes.get('chr9').get('CACFD1')
-        self.assertEqual(start, 136333462)
-        self.assertEqual(stop, 136335910)
-        start, stop = chromosomes.get('chrX').get('MAGED4B')
-        self.assertEqual(start, 51804923)
-        self.assertEqual(stop, 51805761)
+
+        start, stop = 136333462, 136335910
+        gene = chromosomes.get('chr9').find((start + stop) / 2)
+        self.assertEqual(start, gene.get_start())
+        self.assertEqual(stop, gene.get_stop())
+
+        start, stop = 51804923, 51805761
+        gene = chromosomes.get('chrX').find((start + stop) / 2)
+        self.assertEqual(start, gene.get_start())
+        self.assertEqual(stop, gene.get_stop())
 
     def test_cache_chromosomes_joins_out_of_order_gene(self):
         chromosomes = annot.cache_chromosomes(self.gtf_files[0])
-        start, stop = chromosomes.get('chr3').get('ANAPC13')
-        self.assertEqual(start, 134196546)
-        self.assertEqual(stop, 134204162)
+        gene = chromosomes.get('chr3').find(134200000)
+        self.assertEqual(gene.get_start(), 134196546)
+        self.assertEqual(gene.get_stop(), 134204162)
         
     def test_find_overlap_finds_gene_coord_in_middle(self):
         gene_name = 'SUPERSTRENGTH'
@@ -55,7 +61,8 @@ class TestGetAnnotations(unittest.TestCase):
         stop = 134204162
         middle = (start + stop) / 2
 
-        chromosomes = {chromosome: {gene_name: [start, stop]}}
+        genes = [[gene_name, start, stop]]
+        chromosomes = {chromosome: GeneTree.init_from_sorted_genes(genes)}
         result = annot.find_overlap(chromosome, middle, chromosomes)
         self.assertEqual(result, gene_name)
 
@@ -65,7 +72,8 @@ class TestGetAnnotations(unittest.TestCase):
         start = 134196546
         stop = 134204162
 
-        chromosomes = {chromosome: {gene_name: [start, stop]}}
+        genes = [[gene_name, start, stop]]
+        chromosomes = {chromosome: GeneTree.init_from_sorted_genes(genes)}
         result = annot.find_overlap(chromosome, start, chromosomes)
         self.assertEqual(result, gene_name)
 
@@ -75,7 +83,8 @@ class TestGetAnnotations(unittest.TestCase):
         start = 134196546
         stop = 134204162
 
-        chromosomes = {chromosome: {gene_name: [start, stop]}}
+        genes = [[gene_name, start, stop]]
+        chromosomes = {chromosome: GeneTree.init_from_sorted_genes(genes)}
         result = annot.find_overlap(chromosome, stop, chromosomes)
         self.assertEqual(result, gene_name)
 
@@ -86,7 +95,8 @@ class TestGetAnnotations(unittest.TestCase):
         stop = 134204162
         before = start - 1000
 
-        chromosomes = {chromosome: {gene_name: [start, stop]}}
+        genes = [[gene_name, start, stop]]
+        chromosomes = {chromosome: GeneTree.init_from_sorted_genes(genes)}
         result = annot.find_overlap(chromosome, before, chromosomes)
         self.assertNotEqual(result, gene_name)
 
@@ -97,7 +107,8 @@ class TestGetAnnotations(unittest.TestCase):
         stop = 134204162
         after = stop + 1000
 
-        chromosomes = {chromosome: {gene_name: [start, stop]}}
+        genes = [[gene_name, start, stop]]
+        chromosomes = {chromosome: GeneTree.init_from_sorted_genes(genes)}
         result = annot.find_overlap(chromosome, after, chromosomes)
         self.assertNotEqual(result, gene_name)
     
@@ -106,25 +117,14 @@ class TestGetAnnotations(unittest.TestCase):
         CHR_5_GENE = 'CRUCIAL'
         CHR_8_GENE = 'REDUNDANT'
 
+        genes_chr12 = [[CHR_12_GENE, 20000000, 30000000]]
+        genes_chr5 = [[CHR_5_GENE, 70000000, 80000000]]
+        genes_chr8 = [[CHR_8_GENE, 20000000, 30000000]]
+
         chromosomes = {
-            'chr12': {
-                CHR_12_GENE: [
-                    20000000,
-                    30000000
-                ],
-            },
-            'chr5': {
-                CHR_5_GENE: [
-                    70000000,
-                    80000000
-                ],
-            },
-            'chr8': {
-                CHR_8_GENE: [
-                    20000000,
-                    30000000
-                ],
-            },
+            'chr12': GeneTree.init_from_sorted_genes(genes_chr12),
+            'chr5': GeneTree.init_from_sorted_genes(genes_chr5),
+            'chr8': GeneTree.init_from_sorted_genes(genes_chr8),
         }
 
         # All match except chr8
