@@ -12,7 +12,7 @@ Set of three commands, each with applications to DNA sequence analysis
 - `cd my_cloned_dir`
 
 ## Run Tests
-- `python -m unittest tests.annotation_tests tests.fastq_nt_len_tests tests.seq_mode_tests`
+- `python -m unittest tests.annotation_tests tests.fastq_nt_len_tests tests.seq_mode_tests tests.binary_tree_tests`
 
 ## Commands
 
@@ -98,4 +98,4 @@ Example output:
 
 ### Coding Time
 
-Completed in 11 hours between hours of Friday at 4:09pm and Saturday at 5:00pm
+Completed in 17 hours
